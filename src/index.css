@@ -1126,7 +1126,7 @@ body::after {
 
   /* Overlay the content on top of the scene on mobile */
   .content-side {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }

@@ -36,6 +36,14 @@ const VIEW_H = 2000;
 function App() {
     const [scrollProg, setScrollProg] = useState(0);
     const [activeChapter, setActiveChapter] = useState(0);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        handleResize(); // set initially
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         let ticking = false;
@@ -46,8 +54,12 @@ function App() {
             // Update Boat mouse offset
             const boatContainer = document.getElementById('boat-container');
             if (boatContainer) {
+                // On mobile, mouse offset isn't really a thing, but we keep the logic
                 boatContainer.style.transform = `translate(-50%, -50%) translate3d(${currentMouse.x * 0.2}px, ${currentMouse.y * 0.3}px, 0)`;
             }
+
+            // Skip heavy parallax for mobile
+            if (window.innerWidth <= 768) return;
 
             // Update Water Ripples
             const wavesContainer = document.querySelector('.water ul.waves');
@@ -166,7 +178,7 @@ function App() {
                 <div className="scene-side">
                     <div className="scene" id="scene">
                         <div className="water-bg">
-                            <WaterSurface viewW={VIEW_W} viewH={VIEW_H} />
+                            {!isMobile && <WaterSurface viewW={VIEW_W} viewH={VIEW_H} />}
                         </div>
 
                         <Boat
@@ -177,7 +189,7 @@ function App() {
                         />
 
                         <div className="layers-container">
-                            {Array.from({ length: NUM_LAYERS }).map((_, i) => (
+                            {!isMobile && Array.from({ length: NUM_LAYERS }).map((_, i) => (
                                 <Layer
                                     key={i}
                                     layerIndex={i}
