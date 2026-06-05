@@ -10,7 +10,12 @@ export default function ChapterNav({ activeChapter }) {
     const handleClick = (id) => {
         const el = document.getElementById(id);
         if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
+            // scrollIntoView ignores scrolling up if the element is sticky and stuck in view.
+            // Using offsetTop scrolls exactly to the element's static document position.
+            window.scrollTo({ 
+                top: el.offsetTop, 
+                behavior: 'smooth' 
+            });
         }
     };
 

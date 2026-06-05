@@ -99,13 +99,30 @@ function App() {
                 setScrollProg((progress - 0.5) * 2);
                 updatePositions();
 
-                // Determine active chapter
+                // Determine active chapter + apply blur transition
                 const chapters = document.querySelectorAll('[data-chapter]');
                 let current = 0;
                 chapters.forEach((ch, i) => {
                     const rect = ch.getBoundingClientRect();
                     if (rect.top < window.innerHeight * 0.5) {
                         current = i;
+                    }
+
+                    // Blur effect: as the NEXT chapter rises over this one, blur this one out
+                    if (window.innerWidth <= 768) {
+                        ch.style.filter = '';
+                        ch.style.transform = '';
+                    } else if (i < chapters.length - 1) {
+                        const nextRect = chapters[i + 1].getBoundingClientRect();
+                        // progress 0 = next chapter fully below viewport, 1 = fully covering
+                        const coverProgress = 1 - Math.max(0, Math.min(1, nextRect.top / window.innerHeight));
+                        const blur = coverProgress * 10;
+                        const scale = 1 - coverProgress * 0.03;
+                        ch.style.filter = blur > 0.2 ? `blur(${blur}px)` : '';
+                        ch.style.transform = coverProgress > 0.01 ? `scale(${scale})` : '';
+                    } else {
+                        ch.style.filter = '';
+                        ch.style.transform = '';
                     }
                 });
                 setActiveChapter(current);
@@ -140,19 +157,46 @@ function App() {
             { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
         );
 
-        // Observe after a tick to let React render
+        // ResizeObserver to handle tall sticky chapters (make them stick at bottom instead of top)
+        const resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach(entry => {
+                const ch = entry.target;
+                if (window.innerWidth <= 768) {
+                    ch.style.top = '';
+                } else {
+                    const diff = window.innerHeight - ch.offsetHeight;
+                    ch.style.top = Math.min(0, diff) + 'px';
+                }
+            });
+        });
+
         const observeTimer = setTimeout(() => {
             document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+            document.querySelectorAll('.chapter').forEach(el => resizeObserver.observe(el));
         }, 150);
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         window.addEventListener('mousemove', handleMouseMove, { passive: true });
+        
+        // Also update on window resize in case viewport height changes
+        window.addEventListener('resize', () => {
+            document.querySelectorAll('.chapter').forEach(ch => {
+                if (window.innerWidth <= 768) {
+                    ch.style.top = '';
+                } else {
+                    const diff = window.innerHeight - ch.offsetHeight;
+                    ch.style.top = Math.min(0, diff) + 'px';
+                }
+            });
+        });
+
         handleScroll(); // initial position
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('mousemove', handleMouseMove);
             observer.disconnect();
+            resizeObserver.disconnect();
             clearTimeout(observeTimer);
         };
     }, []);
