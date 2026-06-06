@@ -141,21 +141,18 @@ export function AboutSection() {
 
                 <div className="about-content animate-in">
                     <p className="about-text">
-                        I'm a software developer with a strong focus on algorithmic problem solving, 
-                        machine learning, and robust application development. I love building smart systems
-                        that solve real-world problems.
+                        I am currently pursuing my Bachelor of Computer Science at BRAC University, having previously completed my SSC from Dhaka College. I'm a passionate software developer with a strong focus on algorithmic problem solving, machine learning, and robust application development.
                     </p>
                     <p className="about-text">
-                        Whether I'm mapping graph-based routes in Java, predicting data trends with Python, 
-                        or training computer vision models, I approach every project with curiosity and precision.
+                        While I am not yet working professionally, I love building personal projects and smart systems that solve real-world problems. Whether I'm mapping graph-based routes in Java, predicting data trends with Python, or training computer vision models, I approach every project with curiosity and precision.
                     </p>
                 </div>
 
                 <div className="about-stats-list animate-in">
                     <ul className="about-text" style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <li><strong>3+</strong> Years of Experience</li>
-                        <li><strong>15+</strong> Projects Shipped</li>
-                        <li><strong>10+</strong> Technologies</li>
+                        <li><strong>BSc</strong> Computer Science (BRACU)</li>
+                        <li><strong>15+</strong> Academic & Personal Projects</li>
+                        <li><strong>10+</strong> Technologies Explored</li>
                     </ul>
                 </div>
             </div>

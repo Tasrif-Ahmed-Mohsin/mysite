@@ -222,6 +222,9 @@ body::after {
   top: 0;
   z-index: var(--chapter-index, 1);
   background: #ffffff;
+  /* GPU-accelerated card-stack transition */
+  will-change: transform, opacity;
+  overflow: hidden;
 }
 
 .chapter-inner {
@@ -1125,7 +1128,7 @@ body::after {
 
   /* Overlay the content on top of the scene on mobile */
   .content-side {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
@@ -1134,6 +1137,7 @@ body::after {
     padding: 60px 24px;
     min-height: auto;
     position: relative;
+    background: transparent;
   }
 
   .chapter-hero {

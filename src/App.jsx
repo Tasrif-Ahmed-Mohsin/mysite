@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import Layer from './components/Layer';
 import Boat from './components/Boat';
 import WaterSurface from './components/WaterSurface';
@@ -37,97 +37,118 @@ function App() {
     const [scrollProg, setScrollProg] = useState(0);
     const [activeChapter, setActiveChapter] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
+    const mouseRef = useRef({ x: 0, y: 0 });
+    const scrollRef = useRef(0);
+    const tickingRef = useRef(false);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
-        handleResize(); // set initially
+        handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Memoized position updater for parallax (boat, waves, layers)
+    const updatePositions = useCallback(() => {
+        const currentMouse = mouseRef.current;
+        const currentScroll = scrollRef.current;
+
+        // Update Boat mouse offset
+        const boatContainer = document.getElementById('boat-container');
+        if (boatContainer) {
+            boatContainer.style.transform = `translate(-50%, -50%) translate3d(${currentMouse.x * 0.2}px, ${currentMouse.y * 0.3}px, 0)`;
+        }
+
+        // Skip heavy parallax for mobile
+        if (window.innerWidth <= 768) return;
+
+        // Update Water Ripples
+        const wavesContainer = document.querySelector('.water ul.waves');
+        if (wavesContainer) {
+            wavesContainer.style.transform = `translate3d(${currentMouse.x * -40}px, 0, 0)`;
+        }
+
+        // Update Layers parallax
+        for (let i = 0; i < NUM_LAYERS; i++) {
+            const layerEl = document.getElementById(`wave-layer-${i}`);
+            if (layerEl) {
+                const speed = PARALLAX_SPEEDS[i];
+                const viewH = window.innerHeight || VIEW_H;
+                const sy = currentScroll * speed * viewH * 0.5;
+                const sx = Math.sin(currentScroll * Math.PI + i * 0.3) * (NUM_LAYERS - i) * 0.5;
+                const mx = currentMouse.x * (NUM_LAYERS - i) * 1.5;
+                const my = currentMouse.y * (NUM_LAYERS - i) * 0.8;
+                layerEl.style.transform = `translate3d(${sx + mx}px, ${sy + my}px, 0)`;
+            }
+        }
+    }, []);
+
     useEffect(() => {
-        let ticking = false;
-        let currentScroll = 0;
-        let currentMouse = { x: 0, y: 0 };
-
-        const updatePositions = () => {
-            // Update Boat mouse offset
-            const boatContainer = document.getElementById('boat-container');
-            if (boatContainer) {
-                // On mobile, mouse offset isn't really a thing, but we keep the logic
-                boatContainer.style.transform = `translate(-50%, -50%) translate3d(${currentMouse.x * 0.2}px, ${currentMouse.y * 0.3}px, 0)`;
-            }
-
-            // Skip heavy parallax for mobile
-            if (window.innerWidth <= 768) return;
-
-            // Update Water Ripples
-            const wavesContainer = document.querySelector('.water ul.waves');
-            if (wavesContainer) {
-                wavesContainer.style.transform = `translate3d(${currentMouse.x * -40}px, 0, 0)`;
-            }
-
-            // Update Layers parallax
-            for (let i = 0; i < NUM_LAYERS; i++) {
-                const layerEl = document.getElementById(`wave-layer-${i}`);
-                if (layerEl) {
-                    const speed = PARALLAX_SPEEDS[i];
-                    const viewH = window.innerHeight || VIEW_H;
-                    const sy = currentScroll * speed * viewH * 0.5;
-                    const sx = Math.sin(currentScroll * Math.PI + i * 0.3) * (NUM_LAYERS - i) * 0.5;
-                    const mx = currentMouse.x * (NUM_LAYERS - i) * 1.5;
-                    const my = currentMouse.y * (NUM_LAYERS - i) * 0.8;
-                    layerEl.style.transform = `translate3d(${sx + mx}px, ${sy + my}px, 0)`;
-                }
-            }
-        };
-
         const handleScroll = () => {
-            if (ticking) return;
-            ticking = true;
+            if (tickingRef.current) return;
+            tickingRef.current = true;
             requestAnimationFrame(() => {
-                // Global scroll progress (0 to 1)
                 const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
                 const progress = totalScroll > 0
                     ? Math.max(0, Math.min(1, window.scrollY / totalScroll))
                     : 0;
 
-                // Parallax translation should be subtle to avoid exposing layer edges
-                currentScroll = (progress - 0.5) * 0.4;
-                
-                // Keep boat progress from -1 to 1 so it maps to 0 to 1
+                scrollRef.current = (progress - 0.5) * 0.4;
                 setScrollProg((progress - 0.5) * 2);
                 updatePositions();
 
-                // Determine active chapter + apply blur transition
+                // ── Chapter transition: card-stack depth ──
                 const chapters = document.querySelectorAll('[data-chapter]');
+                const isDesktop = window.innerWidth > 768;
+                const vh = window.innerHeight;
                 let current = 0;
+
                 chapters.forEach((ch, i) => {
                     const rect = ch.getBoundingClientRect();
-                    if (rect.top < window.innerHeight * 0.5) {
+
+                    if (rect.top < vh * 0.5) {
                         current = i;
                     }
 
-                    // Blur effect: as the NEXT chapter rises over this one, blur this one out
-                    if (window.innerWidth <= 768) {
-                        ch.style.filter = '';
+                    if (!isDesktop) {
+                        // Mobile: clean slate
                         ch.style.transform = '';
-                    } else if (i < chapters.length - 1) {
-                        const nextRect = chapters[i + 1].getBoundingClientRect();
-                        // progress 0 = next chapter fully below viewport, 1 = fully covering
-                        const coverProgress = 1 - Math.max(0, Math.min(1, nextRect.top / window.innerHeight));
-                        const blur = coverProgress * 10;
-                        const scale = 1 - coverProgress * 0.03;
-                        ch.style.filter = blur > 0.2 ? `blur(${blur}px)` : '';
-                        ch.style.transform = coverProgress > 0.01 ? `scale(${scale})` : '';
+                        ch.style.opacity = '';
+                        return;
+                    }
+
+                    // Check if the NEXT chapter is overlapping this one
+                    const nextChapter = chapters[i + 1];
+                    if (nextChapter) {
+                        const nextRect = nextChapter.getBoundingClientRect();
+                        // How much the next chapter has covered this one (0 = not at all, 1 = fully covered)
+                        const coverProgress = Math.max(0, Math.min(1, 1 - (nextRect.top / vh)));
+
+                        if (coverProgress > 0 && coverProgress < 1) {
+                            // This chapter is being covered — scale down and fade
+                            const scale = 1 - coverProgress * 0.04;
+                            const opacity = 1 - coverProgress * 0.6;
+                            ch.style.transform = `scale(${scale})`;
+                            ch.style.transformOrigin = 'center center';
+                            ch.style.opacity = opacity;
+                        } else if (coverProgress >= 1) {
+                            // Fully covered
+                            ch.style.transform = 'scale(0.96)';
+                            ch.style.opacity = '0.4';
+                        } else {
+                            // Not being covered yet
+                            ch.style.transform = 'none';
+                            ch.style.opacity = '1';
+                        }
                     } else {
-                        ch.style.filter = '';
-                        ch.style.transform = '';
+                        // Last chapter — never gets covered
+                        ch.style.transform = 'none';
+                        ch.style.opacity = '1';
                     }
                 });
-                setActiveChapter(current);
 
-                ticking = false;
+                setActiveChapter(current);
+                tickingRef.current = false;
             });
         };
 
@@ -135,13 +156,12 @@ function App() {
             const sceneSide = document.querySelector('.scene-side');
             if (!sceneSide) return;
             const rect = sceneSide.getBoundingClientRect();
-            // Only respond to mouse within the scene area
             if (e.clientX < rect.left || e.clientX > rect.right) return;
 
-            const mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-            const mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-            currentMouse = { x: mouseX, y: mouseY };
-
+            mouseRef.current = {
+                x: ((e.clientX - rect.left) / rect.width - 0.5) * 2,
+                y: ((e.clientY - rect.top) / rect.height - 0.5) * 2
+            };
             requestAnimationFrame(updatePositions);
         };
 
@@ -157,7 +177,7 @@ function App() {
             { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
         );
 
-        // ResizeObserver to handle tall sticky chapters (make them stick at bottom instead of top)
+        // ResizeObserver to handle tall sticky chapters
         const resizeObserver = new ResizeObserver((entries) => {
             entries.forEach(entry => {
                 const ch = entry.target;
@@ -177,9 +197,8 @@ function App() {
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         window.addEventListener('mousemove', handleMouseMove, { passive: true });
-        
-        // Also update on window resize in case viewport height changes
-        window.addEventListener('resize', () => {
+
+        const handleResizeChapters = () => {
             document.querySelectorAll('.chapter').forEach(ch => {
                 if (window.innerWidth <= 768) {
                     ch.style.top = '';
@@ -188,20 +207,21 @@ function App() {
                     ch.style.top = Math.min(0, diff) + 'px';
                 }
             });
-        });
+        };
+        window.addEventListener('resize', handleResizeChapters);
 
         handleScroll(); // initial position
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('resize', handleResizeChapters);
             observer.disconnect();
             resizeObserver.disconnect();
             clearTimeout(observeTimer);
         };
-    }, []);
+    }, [updatePositions]);
 
-    // Map scrollProg (-1..1) back to boat progress (0..1)
     const boatProgress = (scrollProg / 2) + 0.5;
 
     return (
