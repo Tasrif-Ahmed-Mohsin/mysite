@@ -135,6 +135,7 @@ export function HeroSection() {
 export function AboutSection() {
     return (
         <section className="chapter chapter-about" id="chapter-sail" data-chapter="1" style={{ '--chapter-index': 2 }}>
+            <FloatingBubbles count={30} />
             <div className="chapter-inner">
                 <ChapterMarker number="II" title="Setting Sail" />
                 <h2 className="section-title animate-in">Setting Sail</h2>
@@ -194,6 +195,7 @@ export function ProjectsSection() {
 
     return (
         <section className="chapter chapter-projects" id="chapter-voyage" data-chapter="2" style={{ '--chapter-index': 3 }}>
+            <FloatingBubbles count={30} />
             <div className="chapter-inner">
                 <ChapterMarker number="III" title="The Voyage" />
                 <h2 className="section-title animate-in">The Voyage</h2>
@@ -338,6 +340,7 @@ export function SkillsSection() {
 
     return (
         <section className="chapter chapter-skills" id="chapter-deep" data-chapter="3" style={{ '--chapter-index': 4 }}>
+            <FloatingBubbles count={30} />
             <div className="chapter-inner" style={{ maxWidth: '900px', width: '100%' }}>
                 <ChapterMarker number="IV" title="The Deep" />
                 <h2 className="section-title animate-in">The Deep</h2>
@@ -433,6 +436,7 @@ export function SkillsSection() {
 export function ContactSection() {
     return (
         <section className="chapter chapter-contact" id="chapter-lighthouse" data-chapter="4" style={{ '--chapter-index': 5 }}>
+            <FloatingBubbles count={30} />
             <div className="chapter-inner">
                 <ChapterMarker number="V" title="The Lighthouse" />
                 <h2 className="section-title animate-in">The Lighthouse</h2>
