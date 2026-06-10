@@ -568,174 +568,115 @@ body::after {
   display: none;
 }
 
-/* ─── 10. Skills Chapter — Premium Radial Mind Map (Light) ─── */
+/* ─── 10. Skills Chapter — Particle Canvas ─── */
 .chapter-skills {
   min-height: 100vh;
 }
 
-.mindmap-container {
+/* Canvas wrapper — seamless with page */
+.skills-canvas-wrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
   max-width: 800px;
-  margin: 40px auto 0;
+  margin: 20px auto 0;
+  overflow: hidden;
   background: transparent;
+  cursor: crosshair;
 }
 
-.mindmap-svg {
-  position: absolute;
-  inset: 0;
+.skills-canvas {
+  display: block;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  z-index: 1;
 }
 
-/* Bezier Connection Links */
-.mindmap-link {
-  fill: none;
-  stroke: rgba(42, 102, 147, 0.25);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.mindmap-link.main-link {
-  stroke-width: 0.8;
-}
-
-.mindmap-link.branch-link {
-  stroke-width: 0.4;
-}
-
-.mindmap-link.active {
-  stroke: var(--accent);
-  stroke-width: 1.2;
-  filter: drop-shadow(0 0 3px rgba(42, 102, 147, 0.4));
-}
-
-.mindmap-link.dimmed {
-  stroke: rgba(42, 102, 147, 0.05);
-}
-
-/* Base Node Styling */
-.mindmap-node {
+.skills-canvas-hint {
   position: absolute;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
-}
-
-.mindmap-node.dimmed {
-  opacity: 0.2;
-  pointer-events: none;
-  filter: grayscale(0.8);
-}
-
-/* Center Node */
-.mindmap-node.center-node {
-  padding: 10px 24px;
-  border-radius: 30px;
-  background: var(--ink-deep);
-  color: #fff;
-  box-shadow: 0 8px 24px rgba(10, 46, 77, 0.15);
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-sans);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  font-size: 1rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  z-index: 10;
+  color: var(--ink-muted);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
 }
 
-/* Category Hubs */
-.mindmap-node.cat-node {
-  padding: 6px 16px;
-  background: rgba(255, 255, 255, 0.95);
+.skills-canvas-wrapper:hover .skills-canvas-hint {
+  opacity: 0;
+}
+
+/* ─── Mobile Skills Grid ─── */
+.skills-mobile-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skills-mobile-category {
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
-  border: 1.5px solid rgba(42, 102, 147, 0.2);
-  border-radius: 20px;
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(42, 102, 147, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(10, 46, 77, 0.04);
+}
+
+.skills-mobile-category::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--cat-color, var(--accent));
+  opacity: 0.7;
+}
+
+.skills-mobile-cat-label {
   font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--ink);
-  box-shadow: 0 4px 12px rgba(10, 46, 77, 0.06);
+  margin-bottom: 12px;
 }
 
-.mindmap-node.cat-node.active,
-.mindmap-node.cat-node:hover {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-  transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 0 6px 16px rgba(42, 102, 147, 0.2);
+.skills-mobile-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-/* Skill Nodes (Figma-style sleek glass pills) */
-.mindmap-node.skill-node {
-  gap: 6px;
+.skills-mobile-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   padding: 5px 12px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(42, 102, 147, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(42, 102, 147, 0.12);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
   color: var(--ink-deep);
-  box-shadow: 0 4px 10px rgba(10, 46, 77, 0.04);
+  box-shadow: 0 2px 8px rgba(10, 46, 77, 0.03);
 }
 
-.mindmap-icon {
-  font-size: 1rem;
+.skills-mobile-icon {
+  font-size: 0.9rem;
   color: var(--accent);
   display: flex;
-}
-
-.mindmap-text {
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  font-weight: 500;
-}
-
-.mindmap-node.skill-node.active,
-.mindmap-node.skill-node:hover {
-  z-index: 20;
-  transform: translate(-50%, -50%) scale(1.1);
-  border-color: var(--accent);
-  box-shadow: 
-    0 8px 20px rgba(10, 46, 77, 0.1),
-    0 0 0 3px rgba(42, 102, 147, 0.08);
-  background: rgba(255, 255, 255, 0.98);
-}
-
-.mindmap-node.skill-node.active .mindmap-icon,
-.mindmap-node.skill-node:hover .mindmap-icon {
-  color: var(--accent-hover);
-}
-
-@media (max-width: 768px) {
-  .mindmap-container {
-    aspect-ratio: 1 / 1.1;
-    min-height: 400px;
-  }
-  .mindmap-node.center-node {
-    padding: 8px 16px;
-    font-size: 0.8rem;
-  }
-  .mindmap-node.cat-node {
-    padding: 4px 12px;
-    font-size: 0.7rem;
-  }
-  .mindmap-node.skill-node {
-    padding: 3px 8px;
-    gap: 4px;
-  }
-  .mindmap-text {
-    font-size: 0.6rem;
-  }
-  .mindmap-icon {
-    font-size: 0.8rem;
-  }
+  align-items: center;
 }
 
 /* ─── 11. Contact Chapter ─── */

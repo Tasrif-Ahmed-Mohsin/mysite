@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import FloatingBubbles from './FloatingBubbles';
+import SkillsParticleCanvas from './SkillsParticleCanvas';
 import { 
     FaPython, FaJava, FaBrain, FaRobot, FaReact, FaNodeJs, FaDatabase, 
     FaCube, FaHtml5, FaCss3Alt, FaJs, FaBootstrap, FaServer, FaPaintBrush, 
@@ -248,95 +249,26 @@ export function ProjectsSection() {
 }
 
 /* ═══════════════════════════════════════════
-   IV. THE DEEP — Skills (Neural Mesh)
+   IV. THE DEEP — Skills (Particle Morphing)
    ═══════════════════════════════════════════ */
 
-/* ═══════════════════════════════════════════
-   IV. THE DEEP — Skills (Neural Connection)
-   ═══════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════
-   IV. THE DEEP — Skills (Spider Web)
-   ═══════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════
-   IV. THE DEEP — Skills (Organic Spider Web)
-   ═══════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════
-   IV. THE DEEP — Skills (Modern Node Graph)
-   ═══════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════
-   IV. THE DEEP — Skills (Modern Bento Grid)
-   ═══════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════
-   IV. THE DEEP — Skills (Premium Radial Mind Map)
-   ═══════════════════════════════════════════ */
-
-const SPIDER_CATEGORIES = [
-    { id: 'lang', label: 'Languages', angle: -90, skills: ['Python', 'Java', 'C++', 'TypeScript', 'JavaScript', 'HTML/CSS'] },
-    { id: 'ai', label: 'AI & Data', angle: -18, skills: ['Machine Learning', 'Computer Vision', 'YOLOv10', 'Scikit-Learn', 'Pandas', 'BeautifulSoup'] },
-    { id: 'web', label: 'Web', angle: 54, skills: ['React', 'Node.js', 'Express', 'Bootstrap', 'HTML5 Canvas'] },
-    { id: 'tools', label: 'Tools', angle: 126, skills: ['Git', 'MySQL', 'Figma', 'UI Design'] },
-    { id: 'core', label: 'Core', angle: 198, skills: ['Data Structures', 'Algorithms', 'OOP', 'Robotics', 'Software Design'] }
+const SKILL_CATEGORIES_MOBILE = [
+    { label: 'Languages', skills: ['Python', 'Java', 'C++', 'TypeScript', 'JavaScript', 'HTML/CSS'], color: '#639cc4' },
+    { label: 'AI & Data', skills: ['Machine Learning', 'Computer Vision', 'YOLOv10', 'Scikit-Learn', 'Pandas', 'BeautifulSoup'], color: '#a8e0f0' },
+    { label: 'Web', skills: ['React', 'Node.js', 'Express', 'Bootstrap', 'HTML5 Canvas'], color: '#4483b0' },
+    { label: 'Tools', skills: ['Git', 'MySQL', 'Figma', 'UI Design'], color: '#8cb6d5' },
+    { label: 'Core', skills: ['Data Structures', 'Algorithms', 'OOP', 'Robotics', 'Software Design'], color: '#2a6693' },
 ];
 
 export function SkillsSection() {
-    const [hoveredNode, setHoveredNode] = useState(null);
+    const [isMobile, setIsMobile] = useState(false);
 
-    // Calculate organic, dense cluster positions
-    const centerX = 50;
-    const centerY = 50;
-    const catRadius = 18;  // Category hub distance from center
-    const baseSkillRadius = 16; // Skill distance from CATEGORY hub (creates dense clusters, eliminating long lines)
-
-    const toRad = (deg) => (deg * Math.PI) / 180;
-
-    const categoriesWithPositions = SPIDER_CATEGORIES.map(cat => {
-        // Perfect symmetrical angles for categories
-        const catAngle = cat.angle; 
-        
-        const cx = centerX + catRadius * Math.cos(toRad(catAngle));
-        const cy = centerY + catRadius * Math.sin(toRad(catAngle));
-        
-        // Spread skills tightly around the category hub, pointing outward
-        const spread = 100; 
-        const step = spread / Math.max(1, cat.skills.length - 1);
-        const startAngle = catAngle - spread / 2;
-
-        const skills = cat.skills.map((skill, i) => {
-            // "Uneven Symmetry" -> Staggered radius within the cluster
-            const isOuter = i % 2 === 0;
-            const skillDist = isOuter ? baseSkillRadius + 3 : baseSkillRadius - 3; 
-            const skillAngle = startAngle + i * step;
-
-            const sx = cx + skillDist * Math.cos(toRad(skillAngle));
-            const sy = cy + skillDist * Math.sin(toRad(skillAngle));
-            return { name: skill, x: sx, y: sy, angle: skillAngle };
-        });
-
-        return { ...cat, cx, cy, skills, catAngle };
-    });
-
-    const isNodeActive = (catId, skillName = null) => {
-        if (!hoveredNode) return false;
-        if (hoveredNode.type === 'center') return true;
-        if (hoveredNode.type === 'cat' && hoveredNode.id === catId) return true;
-        if (hoveredNode.type === 'skill' && hoveredNode.catId === catId && (!skillName || hoveredNode.name === skillName)) return true;
-        return false;
-    };
-
-    const isAnyHovered = hoveredNode !== null;
-
-    // Helper to draw elegant cubic bezier S-curves from Center -> Hub -> Skill
-    const drawCurve = (x1, y1, x2, y2) => {
-        // A gentle curve that bulges slightly outward
-        const midX = x1 + (x2 - x1) * 0.4;
-        const midY = y1 + (y2 - y1) * 0.4;
-        return `M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`;
-    };
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth <= 768);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
 
     return (
         <section className="chapter chapter-skills" id="chapter-deep" data-chapter="3" style={{ '--chapter-index': 4 }}>
@@ -345,86 +277,34 @@ export function SkillsSection() {
                 <ChapterMarker number="IV" title="The Deep" />
                 <h2 className="section-title animate-in">The Deep</h2>
                 <p className="section-subtitle animate-in">
-                    A modern neural map of my technical ecosystem.
+                    {isMobile
+                        ? 'A map of my technical ecosystem.'
+                        : 'Hover to reveal the constellations of my technical ecosystem.'}
                 </p>
 
-                <div className="mindmap-container animate-in">
-                    {/* SVG Connections */}
-                    <svg className="mindmap-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-                        {/* Connection Lines (Center -> Category -> Skills) */}
-                        {categoriesWithPositions.map(cat => {
-                            const catActive = isNodeActive(cat.id);
-                            return (
-                                <g key={`links-${cat.id}`}>
-                                    {/* Center to Cat */}
-                                    <path 
-                                        d={drawCurve(50, 50, cat.cx, cat.cy)}
-                                        className={`mindmap-link main-link ${catActive ? 'active' : ''} ${isAnyHovered && !catActive ? 'dimmed' : ''}`} 
-                                    />
-                                    {/* Cat to Skills */}
-                                    {cat.skills.map(skill => {
-                                        const skillActive = isNodeActive(cat.id, skill.name);
-                                        return (
-                                            <path 
-                                                key={`link-${skill.name}`}
-                                                d={drawCurve(cat.cx, cat.cy, skill.x, skill.y)}
-                                                className={`mindmap-link branch-link ${skillActive ? 'active' : ''} ${isAnyHovered && !skillActive ? 'dimmed' : ''}`}
-                                            />
-                                        );
-                                    })}
-                                </g>
-                            );
-                        })}
-                    </svg>
-
-                    {/* Nodes HTML Overlay */}
-                    
-                    {/* Center Node */}
-                    <div 
-                        className={`mindmap-node center-node ${hoveredNode?.type === 'center' ? 'hovered' : ''}`}
-                        style={{ left: '50%', top: '50%' }}
-                        onMouseEnter={() => setHoveredNode({ type: 'center' })}
-                        onMouseLeave={() => setHoveredNode(null)}
-                    >
-                        <span>Skills Stack</span>
-                    </div>
-
-                    {/* Category Hubs & Skill Nodes */}
-                    {categoriesWithPositions.map(cat => {
-                        const catActive = isNodeActive(cat.id);
-                        return (
-                            <div key={`group-${cat.id}`}>
-                                {/* Category Node */}
-                                <div 
-                                    className={`mindmap-node cat-node ${catActive ? 'active' : ''} ${isAnyHovered && !catActive ? 'dimmed' : ''}`}
-                                    style={{ left: `${cat.cx}%`, top: `${cat.cy}%` }}
-                                    onMouseEnter={() => setHoveredNode({ type: 'cat', id: cat.id })}
-                                    onMouseLeave={() => setHoveredNode(null)}
-                                >
-                                    {cat.label}
+                {isMobile ? (
+                    /* ── Mobile: simple grid of category cards ── */
+                    <div className="skills-mobile-grid animate-in">
+                        {SKILL_CATEGORIES_MOBILE.map(cat => (
+                            <div key={cat.label} className="skills-mobile-category" style={{ '--cat-color': cat.color }}>
+                                <h3 className="skills-mobile-cat-label">{cat.label}</h3>
+                                <div className="skills-mobile-pills">
+                                    {cat.skills.map(skill => (
+                                        <span key={skill} className="skills-mobile-pill">
+                                            {TECH_ICONS[skill] && <span className="skills-mobile-icon">{TECH_ICONS[skill]}</span>}
+                                            {skill}
+                                        </span>
+                                    ))}
                                 </div>
-
-                                {/* Skill Nodes */}
-                                {cat.skills.map(skill => {
-                                    const skillActive = isNodeActive(cat.id, skill.name);
-                                    const isHovered = hoveredNode?.name === skill.name;
-                                    return (
-                                        <div 
-                                            key={skill.name}
-                                            className={`mindmap-node skill-node ${skillActive ? 'active' : ''} ${isHovered ? 'hovered' : ''} ${isAnyHovered && !skillActive ? 'dimmed' : ''}`}
-                                            style={{ left: `${skill.x}%`, top: `${skill.y}%` }}
-                                            onMouseEnter={() => setHoveredNode({ type: 'skill', catId: cat.id, name: skill.name })}
-                                            onMouseLeave={() => setHoveredNode(null)}
-                                        >
-                                            <span className="mindmap-icon">{TECH_ICONS[skill.name] || skill.name[0]}</span>
-                                            <span className="mindmap-text">{skill.name}</span>
-                                        </div>
-                                    );
-                                })}
                             </div>
-                        );
-                    })}
-                </div>
+                        ))}
+                    </div>
+                ) : (
+                    /* ── Desktop: particle canvas ── */
+                    <div className="animate-in">
+                        <SkillsParticleCanvas />
+                    </div>
+                )}
             </div>
         </section>
     );
