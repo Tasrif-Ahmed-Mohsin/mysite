@@ -96,7 +96,7 @@ function ChapterMarker({ number, title }) {
 export function HeroSection() {
     return (
         <section className="chapter chapter-hero" id="chapter-harbor" data-chapter="0" style={{ '--chapter-index': 1 }}>
-            <FloatingBubbles count={40} />
+            <FloatingBubbles count={15} />
             <div className="chapter-inner">
                 <div className="hero-eyebrow animate-in">
                     <span className="eyebrow-line"></span>
@@ -136,26 +136,33 @@ export function HeroSection() {
 export function AboutSection() {
     return (
         <section className="chapter chapter-about" id="chapter-sail" data-chapter="1" style={{ '--chapter-index': 2 }}>
-            <FloatingBubbles count={30} />
+            <FloatingBubbles count={10} />
             <div className="chapter-inner">
                 <ChapterMarker number="II" title="Setting Sail" />
                 <h2 className="section-title animate-in">Setting Sail</h2>
 
                 <div className="about-content animate-in">
-                    <p className="about-text">
-                        I am currently pursuing my Bachelor of Computer Science at BRAC University, having previously completed my SSC from Dhaka College. I'm a passionate software developer with a strong focus on algorithmic problem solving, machine learning, and robust application development.
+                    <p className="about-text lead-text">
+                        I am currently pursuing my Bachelor of Computer Science at <span className="highlight-text">BRAC University</span>, having previously completed my SSC from Dhaka College. I'm a passionate software developer with a strong focus on <span className="highlight-text">algorithmic problem solving</span>, <span className="highlight-text">machine learning</span>, and <span className="highlight-text">robust application development</span>.
                     </p>
                     <p className="about-text">
                         While I am not yet working professionally, I love building personal projects and smart systems that solve real-world problems. Whether I'm mapping graph-based routes in Java, predicting data trends with Python, or training computer vision models, I approach every project with curiosity and precision.
                     </p>
                 </div>
 
-                <div className="about-stats-list animate-in">
-                    <ul className="about-text" style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <li><strong>BSc</strong> Computer Science (BRACU)</li>
-                        <li><strong>15+</strong> Academic & Personal Projects</li>
-                        <li><strong>10+</strong> Technologies Explored</li>
-                    </ul>
+                <div className="about-stats animate-in">
+                    <div className="stat-card" style={{ '--delay': '0.1s' }}>
+                        <span className="stat-number">BSc</span>
+                        <span className="stat-label">Computer Science<br/>(BRACU)</span>
+                    </div>
+                    <div className="stat-card" style={{ '--delay': '0.2s' }}>
+                        <span className="stat-number">15+</span>
+                        <span className="stat-label">Academic &<br/>Personal Projects</span>
+                    </div>
+                    <div className="stat-card" style={{ '--delay': '0.3s' }}>
+                        <span className="stat-number">10+</span>
+                        <span className="stat-label">Technologies<br/>Explored</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -196,7 +203,7 @@ export function ProjectsSection() {
 
     return (
         <section className="chapter chapter-projects" id="chapter-voyage" data-chapter="2" style={{ '--chapter-index': 3 }}>
-            <FloatingBubbles count={30} />
+            <FloatingBubbles count={10} />
             <div className="chapter-inner">
                 <ChapterMarker number="III" title="The Voyage" />
                 <h2 className="section-title animate-in">The Voyage</h2>
@@ -272,7 +279,7 @@ export function SkillsSection() {
 
     return (
         <section className="chapter chapter-skills" id="chapter-deep" data-chapter="3" style={{ '--chapter-index': 4 }}>
-            <FloatingBubbles count={30} />
+            <FloatingBubbles count={10} />
             <div className="chapter-inner" style={{ maxWidth: '900px', width: '100%' }}>
                 <ChapterMarker number="IV" title="The Deep" />
                 <h2 className="section-title animate-in">The Deep</h2>
@@ -316,7 +323,7 @@ export function SkillsSection() {
 export function ContactSection() {
     return (
         <section className="chapter chapter-contact" id="chapter-lighthouse" data-chapter="4" style={{ '--chapter-index': 5 }}>
-            <FloatingBubbles count={30} />
+            <FloatingBubbles count={10} />
             <div className="chapter-inner">
                 <ChapterMarker number="V" title="The Lighthouse" />
                 <h2 className="section-title animate-in">The Lighthouse</h2>
