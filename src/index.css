@@ -317,6 +317,21 @@ body::after {
   line-height: 1;
 }
 
+.hero-letter-slot,
+.hero-letter {
+  display: inline-block;
+}
+
+.hero-letter {
+  transform-origin: center 70%;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .hero-letter {
+    will-change: transform;
+  }
+}
+
 .name-first {
   font-size: clamp(3.5rem, 7vw, 6rem);
   font-weight: 700;

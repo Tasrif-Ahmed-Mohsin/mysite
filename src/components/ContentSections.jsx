@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import FloatingBubbles from './FloatingBubbles';
 import SkillsParticleCanvas from './SkillsParticleCanvas';
+import FloatingHeroName from './FloatingHeroName';
 import { PROJECTS, SKILL_CATEGORIES, CONTENT_UPDATED, PROFILE_URL } from '../data/portfolio';
 import { 
     FaPython, FaJava, FaBrain, FaRobot, FaReact, FaNodeJs, FaDatabase, 
@@ -72,11 +73,7 @@ export function HeroSection() {
                     <span className="eyebrow-line"></span>
                 </div>
 
-                <h1 className="hero-name animate-in">
-                    <span className="name-first">Tasrif</span>
-                    <span className="name-last">Ahmed</span>
-                    <span className="name-surname">Mohsin</span>
-                </h1>
+                <FloatingHeroName />
 
                 <p className="hero-role animate-in">
                     Full-stack, AI &amp; Systems Developer
