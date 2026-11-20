@@ -337,6 +337,13 @@ body::after {
   letter-spacing: 0.04em;
 }
 
+.name-surname {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: var(--ink);
+  margin-top: 12px;
+  letter-spacing: 0.12em;
+}
+
 .hero-tagline {
   font-family: var(--font-display);
   font-size: clamp(1rem, 2vw, 1.25rem);
@@ -490,7 +497,7 @@ body::after {
 
 .projects-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
   width: 100%;
 }
@@ -514,7 +521,7 @@ body::after {
   flex-direction: column;
   background: #ffffff;
   padding: 10px;
-  padding-bottom: 60px;
+  padding-bottom: 52px;
   /* Reduced to make it less fat */
   border-radius: 14px;
   overflow: hidden;
@@ -532,23 +539,52 @@ body::after {
   box-shadow: 0 16px 40px rgba(10, 46, 77, 0.12);
 }
 
+.project-card:focus-visible,
+.show-all-btn:focus-visible {
+  outline: 3px solid #2a6693;
+  outline-offset: 5px;
+}
+
+.content-updated {
+  font-size: 0.875rem;
+  color: var(--ink-deep);
+  margin: -16px 0 28px;
+}
+
+.project-category {
+  font-size: 0.875rem;
+  color: #365b79;
+  margin-bottom: 10px;
+}
+
+.project-profile-link {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 1rem;
+}
+
+.project-profile-link a {
+  color: var(--ink);
+  text-underline-offset: 4px;
+}
+
 .project-card:active {
   transform: scale(0.98);
 }
 
 /* The slide-up "View Project" overlay matching the reference */
 .project-card::after {
-  content: "View Project ↗";
+  content: "View repository";
   display: flex;
   align-items: center;
   padding-left: 20px;
   position: absolute;
   left: 0;
-  bottom: -60px;
+  bottom: 0;
   /* Matches new padding-bottom */
   background: var(--accent);
   color: #fff;
-  height: 60px;
+  height: 52px;
   /* Matches new padding-bottom */
   width: 100%;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -557,7 +593,7 @@ body::after {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0;
+  opacity: 1;
   z-index: 10;
   box-sizing: border-box;
 }
@@ -595,11 +631,9 @@ body::after {
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--ink);
-  position: absolute;
-  left: 20px;
-  bottom: 18px;
-  /* Adjusted to center in the 60px bottom space */
-  margin: 0;
+  position: static;
+  margin: 0 0 14px;
+  overflow-wrap: anywhere;
   z-index: 5;
   transition: all 0.3s ease;
 }
@@ -614,7 +648,7 @@ body::after {
 
 .project-desc {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.6;
   color: var(--ink-deep);
   font-weight: 400;
@@ -630,15 +664,16 @@ body::after {
 }
 
 .tech-pill {
-  font-size: 1.15rem;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  font-size: 0.875rem;
+  padding: 5px 9px;
+  gap: 6px;
+  min-height: 32px;
+  border-radius: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(42, 102, 147, 0.08), rgba(140, 182, 213, 0.12));
-  color: var(--accent);
+  color: var(--ink);
   border: 1px solid rgba(42, 102, 147, 0.1);
   transition: all 0.3s ease;
 }

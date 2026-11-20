@@ -231,10 +231,15 @@ function App() {
             <div className="portfolio-layout">
                 {/* Left: scrolling portfolio content */}
                 <main className="content-side">
+                    <div id="anchor-chapter-harbor" aria-hidden="true" />
                     <HeroSection />
+                    <div id="anchor-chapter-sail" aria-hidden="true" />
                     <AboutSection />
+                    <div id="anchor-chapter-voyage" aria-hidden="true" />
                     <ProjectsSection />
+                    <div id="anchor-chapter-deep" aria-hidden="true" />
                     <SkillsSection />
+                    <div id="anchor-chapter-lighthouse" aria-hidden="true" />
                     <ContactSection />
                 </main>
 

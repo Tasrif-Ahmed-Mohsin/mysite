@@ -8,12 +8,12 @@ const CHAPTERS = [
 
 export default function ChapterNav({ activeChapter }) {
     const handleClick = (id) => {
-        const el = document.getElementById(id);
+        const el = document.getElementById(`anchor-${id}`);
         if (el) {
-            // scrollIntoView ignores scrolling up if the element is sticky and stuck in view.
-            // Using offsetTop scrolls exactly to the element's static document position.
+            // A normal-flow anchor stays at the chapter's original position,
+            // even when the chapter itself has become sticky or transformed.
             window.scrollTo({ 
-                top: el.offsetTop, 
+                top: window.scrollY + el.getBoundingClientRect().top,
                 behavior: 'smooth' 
             });
         }

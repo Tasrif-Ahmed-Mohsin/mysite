@@ -1,35 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 
-/* ───────────────────────────────────────────────
-   Skill category data (mirrors ContentSections)
-   ─────────────────────────────────────────────── */
-const CATEGORIES = [
-    {
-        id: 'lang', label: 'Languages',
-        skills: ['Python', 'Java', 'C++', 'TypeScript', 'JavaScript', 'HTML/CSS'],
-        color: '#639cc4',
-    },
-    {
-        id: 'ai', label: 'AI & Data',
-        skills: ['Machine Learning', 'Computer Vision', 'YOLOv10', 'Scikit-Learn', 'Pandas', 'BeautifulSoup'],
-        color: '#a8e0f0',
-    },
-    {
-        id: 'web', label: 'Web',
-        skills: ['React', 'Node.js', 'Express', 'Bootstrap', 'HTML5 Canvas'],
-        color: '#4483b0',
-    },
-    {
-        id: 'tools', label: 'Tools',
-        skills: ['Git', 'MySQL', 'Figma', 'UI Design'],
-        color: '#8cb6d5',
-    },
-    {
-        id: 'core', label: 'Core',
-        skills: ['Data Structures', 'Algorithms', 'OOP', 'Robotics', 'Software Design'],
-        color: '#2a6693',
-    },
-];
+import { SKILL_CATEGORIES as CATEGORIES } from '../data/portfolio';
 
 /* Total skill particles + ambient filler particles */
 const TOTAL_SKILL_PARTICLES = CATEGORIES.reduce((s, c) => s + c.skills.length, 0);

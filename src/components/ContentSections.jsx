@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import FloatingBubbles from './FloatingBubbles';
 import SkillsParticleCanvas from './SkillsParticleCanvas';
+import { PROJECTS, SKILL_CATEGORIES, CONTENT_UPDATED, PROFILE_URL } from '../data/portfolio';
 import { 
     FaPython, FaJava, FaBrain, FaRobot, FaReact, FaNodeJs, FaDatabase, 
     FaCube, FaHtml5, FaCss3Alt, FaJs, FaBootstrap, FaServer, FaPaintBrush, 
@@ -46,39 +47,6 @@ const TECH_ICONS = {
     'HTML/CSS': <FaHtml5 />
 };
 
-const PROJECTS = [
-    // --- Top 4 (Shown initially) ---
-    // Left Column (Indices 0, 1)
-    { title: 'Restaurant-Saga', description: 'An interactive machine learning web app predicting restaurant success based on coordinates in Dhaka using RandomForestRegressor and heatmaps.', tech: ['Python', 'Scikit-Learn', 'Machine Learning'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/Restaurant-Saga', accent: '#2a6693' },
-    { title: 'Robo-Pekka', description: 'A robotics/algorithmic pathfinding project developed in C++.', tech: ['C++', 'Robotics', 'Algorithms'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/Robo-Pekka', accent: '#8cb6d5' },
-    
-    // Right Column (Indices 2, 3)
-    { title: 'Graph-DSA', description: 'DSA practice and graph algorithms implementations.', tech: ['Java', 'Data Structures', 'Algorithms'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/Graph-DSA', accent: '#2a6693' },
-    { title: 'Way-to-BRAC', description: 'A Java-based GUI application using graph-based systems to map areas, nodes, and calculate multiple optimal routes.', tech: ['Java', 'Algorithms', 'GUI'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/Way-to-BRAC', accent: '#4483b0' },
-
-    // --- The rest (Shown on expand) ---
-    { title: 'Gun-detection-with-yolov10', description: 'Advanced computer vision model leveraging YOLOv10 for real-time object detection and safety monitoring.', tech: ['Python', 'Computer Vision', 'YOLOv10'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/Gun-detection-with-yolov10', accent: '#639cc4' },
-    { title: 'mango', description: 'A TypeScript-based scalable web project.', tech: ['TypeScript', 'React', 'Node.js'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/mango', accent: '#1a8a7a' },
-    { title: 'TradePulse', description: 'A comprehensive trading and financial data pulse tracker that aggregates market trends in real-time.', tech: ['JavaScript', 'React', 'API'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/TradePulse', accent: '#2a6693' },
-    { title: 'lab-Sorting', description: 'Sorting algorithms and lab assignments.', tech: ['Java', 'Algorithms'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/lab-Sorting', accent: '#639cc4' },
-    { title: 'myscrap', description: 'An automated web scraping tool built with Python and BeautifulSoup to extract and process datasets.', tech: ['Python', 'BeautifulSoup', 'Pandas'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/myscrap', accent: '#8cb6d5' },
-    { title: 'webpath', description: 'A front-end web project.', tech: ['HTML', 'CSS', 'JavaScript'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/webpath', accent: '#8cb6d5' },
-    { title: 'Parking_System', description: 'A complete parking management system utilizing OOP principles in Java and a MySQL database.', tech: ['Java', 'OOP', 'MySQL'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/Parking_System', accent: '#4483b0' },
-    { title: 'parkway', description: 'A web interface for parking solutions.', tech: ['HTML', 'CSS', 'Bootstrap'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/parkway', accent: '#1a8a7a' },
-    { title: 'drink', description: 'A creative UI layout.', tech: ['CSS', 'HTML', 'UI Design'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/drink', accent: '#4483b0' },
-    { title: 'flappy', description: 'A web-based game implementation.', tech: ['CSS', 'JavaScript', 'HTML5 Canvas'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/flappy', accent: '#639cc4' },
-    { title: 'homepgJuice', description: 'Landing page design for a juice brand.', tech: ['CSS', 'HTML', 'Figma'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/homepgJuice', accent: '#8cb6d5' },
-    { title: 'juice', description: 'E-commerce or product display layout.', tech: ['CSS', 'HTML', 'JavaScript'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/juice', accent: '#1a8a7a' },
-    { title: 'juicepr', description: 'Product presentation site.', tech: ['CSS', 'HTML'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/juicepr', accent: '#2a6693' },
-    { title: 'management', description: 'A management dashboard layout.', tech: ['CSS', 'React', 'Dashboard'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/management', accent: '#4483b0' },
-    { title: 'market', description: 'A marketplace UI or logic implementation.', tech: ['JavaScript', 'Node.js', 'Express'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/market', accent: '#639cc4' },
-    { title: 'structure', description: 'Data structures implementation.', tech: ['Java', 'Data Structures'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/structure', accent: '#1a8a7a' },
-    { title: 'tukii', description: 'A front-end interface project.', tech: ['HTML', 'CSS', 'JavaScript'], link: 'https://github.com/Tasrif-Ahmed-Mohsin/tukii', accent: '#2a6693' }
-];
-
-
-
-
 /* ─── Chapter Marker ─── */
 function ChapterMarker({ number, title }) {
     return (
@@ -107,15 +75,16 @@ export function HeroSection() {
                 <h1 className="hero-name animate-in">
                     <span className="name-first">Tasrif</span>
                     <span className="name-last">Ahmed</span>
+                    <span className="name-surname">Mohsin</span>
                 </h1>
 
                 <p className="hero-role animate-in">
-                    Software Developer &amp; AI Enthusiast
+                    Full-stack, AI &amp; Systems Developer
                     <span className="typed-cursor" aria-hidden="true"></span>
                 </p>
 
                 <p className="hero-tagline animate-in">
-                    Building digital experiences that make waves.
+                    From intelligent agents to robotics, building systems that make waves.
                 </p>
 
                 <div className="hero-scroll-hint animate-in">
@@ -143,10 +112,10 @@ export function AboutSection() {
 
                 <div className="about-content animate-in">
                     <p className="about-text lead-text">
-                        I am currently pursuing my Bachelor of Computer Science at <span className="highlight-text">BRAC University</span>, having previously completed my SSC from Dhaka College. I'm a passionate software developer with a strong focus on <span className="highlight-text">algorithmic problem solving</span>, <span className="highlight-text">machine learning</span>, and <span className="highlight-text">robust application development</span>.
+                        I’m Tasrif Ahmed Mohsin, a Computer Science undergraduate at <span className="highlight-text">BRAC University</span> in Dhaka, Bangladesh. I build across <span className="highlight-text">full-stack development</span>, <span className="highlight-text">AI and optimization</span>, and <span className="highlight-text">robotics and embedded systems</span>.
                     </p>
                     <p className="about-text">
-                        While I am not yet working professionally, I love building personal projects and smart systems that solve real-world problems. Whether I'm mapping graph-based routes in Java, predicting data trends with Python, or training computer vision models, I approach every project with curiosity and precision.
+                        My recent work includes Bluefin, a student finance sandbox for FinTechathon 2026; GridWise, a campus energy optimizer; and Grace, a ROS2 controls and kinematics submission. I’m interested in systems that connect useful interfaces with clear rules, testable decisions and human oversight.
                     </p>
                 </div>
 
@@ -156,12 +125,12 @@ export function AboutSection() {
                         <span className="stat-label">Computer Science<br/>(BRACU)</span>
                     </div>
                     <div className="stat-card" style={{ '--delay': '0.2s' }}>
-                        <span className="stat-number">15+</span>
-                        <span className="stat-label">Academic &<br/>Personal Projects</span>
+                        <span className="stat-number">{PROJECTS.length}</span>
+                        <span className="stat-label">Selected<br/>Projects</span>
                     </div>
                     <div className="stat-card" style={{ '--delay': '0.3s' }}>
-                        <span className="stat-number">10+</span>
-                        <span className="stat-label">Technologies<br/>Explored</span>
+                        <span className="stat-number">2026</span>
+                        <span className="stat-label">Latest<br/>Builds</span>
                     </div>
                 </div>
             </div>
@@ -208,10 +177,14 @@ export function ProjectsSection() {
                 <ChapterMarker number="III" title="The Voyage" />
                 <h2 className="section-title animate-in">The Voyage</h2>
                 <p className="section-subtitle animate-in">
-                    Ports of call along the journey — projects I've built and shipped.
+                    Recent builds in AI, finance, agriculture and robotics, followed by earlier projects.
                 </p>
 
-                <div className="projects-list">
+                <p className="content-updated animate-in">
+                    Updated <time dateTime={CONTENT_UPDATED}>20 November 2026</time>
+                </p>
+
+                <div className="projects-list" id="selected-projects">
                     {displayedProjects.map((project, i) => (
                         <a
                             key={project.title}
@@ -221,20 +194,17 @@ export function ProjectsSection() {
                         >
                             <div className="project-accent-bar"></div>
                             <div className="project-body">
+                                <p className="project-category">{project.category}</p>
                                 <h3 className="project-title">{project.title}</h3>
                                 <p className="project-desc">{project.description || project.title}</p>
                                 <div className="project-tech">
                                     {project.tech.map(t => (
                                         <span key={t} className="tech-pill" title={t}>
-                                            {TECH_ICONS[t] || t}
+                                            {TECH_ICONS[t] && <span aria-hidden="true">{TECH_ICONS[t]}</span>}
+                                            <span>{t}</span>
                                         </span>
                                     ))}
                                 </div>
-                            </div>
-                            <div className="project-arrow">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                    <path d="M5 13 L13 5 M13 5 L5 5 M13 5 L13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
                             </div>
                         </a>
                     ))}
@@ -245,11 +215,14 @@ export function ProjectsSection() {
                         <button 
                             className="show-all-btn"
                             onClick={() => setShowAll(!showAll)}
+                            aria-expanded={showAll}
+                            aria-controls="selected-projects"
                         >
-                            {showAll ? '← Show Less' : `Show All Repositories (${PROJECTS.length - 4} more) →`}
+                            {showAll ? 'Show fewer projects' : `Explore all ${PROJECTS.length} projects`}
                         </button>
                     </div>
                 )}
+                <p className="project-profile-link"><a href={`${PROFILE_URL}?tab=repositories`} target="_blank" rel="noopener noreferrer">Browse all repositories on GitHub</a></p>
             </div>
         </section>
     );
@@ -258,14 +231,6 @@ export function ProjectsSection() {
 /* ═══════════════════════════════════════════
    IV. THE DEEP — Skills (Particle Morphing)
    ═══════════════════════════════════════════ */
-
-const SKILL_CATEGORIES_MOBILE = [
-    { label: 'Languages', skills: ['Python', 'Java', 'C++', 'TypeScript', 'JavaScript', 'HTML/CSS'], color: '#639cc4' },
-    { label: 'AI & Data', skills: ['Machine Learning', 'Computer Vision', 'YOLOv10', 'Scikit-Learn', 'Pandas', 'BeautifulSoup'], color: '#a8e0f0' },
-    { label: 'Web', skills: ['React', 'Node.js', 'Express', 'Bootstrap', 'HTML5 Canvas'], color: '#4483b0' },
-    { label: 'Tools', skills: ['Git', 'MySQL', 'Figma', 'UI Design'], color: '#8cb6d5' },
-    { label: 'Core', skills: ['Data Structures', 'Algorithms', 'OOP', 'Robotics', 'Software Design'], color: '#2a6693' },
-];
 
 export function SkillsSection() {
     const [isMobile, setIsMobile] = useState(false);
@@ -292,7 +257,7 @@ export function SkillsSection() {
                 {isMobile ? (
                     /* ── Mobile: simple grid of category cards ── */
                     <div className="skills-mobile-grid animate-in">
-                        {SKILL_CATEGORIES_MOBILE.map(cat => (
+                        {SKILL_CATEGORIES.map(cat => (
                             <div key={cat.label} className="skills-mobile-category" style={{ '--cat-color': cat.color }}>
                                 <h3 className="skills-mobile-cat-label">{cat.label}</h3>
                                 <div className="skills-mobile-pills">
