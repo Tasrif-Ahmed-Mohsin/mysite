@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import FloatingBubbles from './FloatingBubbles';
 import SkillsParticleCanvas from './SkillsParticleCanvas';
 import FloatingHeroName from './FloatingHeroName';
+import FloatingText from './FloatingText';
 import { PROJECTS, SKILL_CATEGORIES, CONTENT_UPDATED, PROFILE_URL } from '../data/portfolio';
 import { 
     FaPython, FaJava, FaBrain, FaRobot, FaReact, FaNodeJs, FaDatabase, 
@@ -69,23 +70,23 @@ export function HeroSection() {
             <div className="chapter-inner">
                 <div className="hero-eyebrow animate-in">
                     <span className="eyebrow-line"></span>
-                    <span>Welcome Aboard</span>
+                    <FloatingText>Welcome Aboard</FloatingText>
                     <span className="eyebrow-line"></span>
                 </div>
 
                 <FloatingHeroName />
 
                 <p className="hero-role animate-in">
-                    Full-stack, AI &amp; Systems Developer
+                    <FloatingText>Full-stack, AI &amp; Systems Developer</FloatingText>
                     <span className="typed-cursor" aria-hidden="true"></span>
                 </p>
 
-                <p className="hero-tagline animate-in">
+                <FloatingText as="p" className="hero-tagline animate-in">
                     From intelligent agents to robotics, building systems that make waves.
-                </p>
+                </FloatingText>
 
                 <div className="hero-scroll-hint animate-in">
-                    <span>Scroll to set sail</span>
+                    <FloatingText>Scroll to set sail</FloatingText>
                     <svg width="20" height="28" viewBox="0 0 20 28" fill="none" className="scroll-chevron">
                         <path d="M10 2 L10 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         <path d="M3 16 L10 24 L17 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -105,7 +106,7 @@ export function AboutSection() {
             <FloatingBubbles count={10} />
             <div className="chapter-inner">
                 <ChapterMarker number="II" title="Setting Sail" />
-                <h2 className="section-title animate-in">Setting Sail</h2>
+                <FloatingText as="h2" className="section-title animate-in" intensity={0.8}>Setting Sail</FloatingText>
 
                 <div className="about-content animate-in">
                     <p className="about-text lead-text">
@@ -172,7 +173,7 @@ export function ProjectsSection() {
             <FloatingBubbles count={10} />
             <div className="chapter-inner">
                 <ChapterMarker number="III" title="The Voyage" />
-                <h2 className="section-title animate-in">The Voyage</h2>
+                <FloatingText as="h2" className="section-title animate-in" intensity={0.8}>The Voyage</FloatingText>
                 <p className="section-subtitle animate-in">
                     Recent builds in AI, finance, agriculture and robotics, followed by earlier projects.
                 </p>
@@ -244,7 +245,7 @@ export function SkillsSection() {
             <FloatingBubbles count={10} />
             <div className="chapter-inner" style={{ maxWidth: '900px', width: '100%' }}>
                 <ChapterMarker number="IV" title="The Deep" />
-                <h2 className="section-title animate-in">The Deep</h2>
+                <FloatingText as="h2" className="section-title animate-in" intensity={0.8}>The Deep</FloatingText>
                 <p className="section-subtitle animate-in">
                     {isMobile
                         ? 'A map of my technical ecosystem.'
@@ -288,7 +289,7 @@ export function ContactSection() {
             <FloatingBubbles count={10} />
             <div className="chapter-inner">
                 <ChapterMarker number="V" title="The Lighthouse" />
-                <h2 className="section-title animate-in">The Lighthouse</h2>
+                <FloatingText as="h2" className="section-title animate-in" intensity={0.8}>The Lighthouse</FloatingText>
                 <p className="section-subtitle animate-in">
                     Every voyage has a destination. Let's build something together.
                 </p>
